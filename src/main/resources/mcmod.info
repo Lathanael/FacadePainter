@@ -1,0 +1,16 @@
+[
+{
+  "modid": "facadepainter",
+  "name": "Facade Painter",
+  "description": "Adds a tool to paint Ender IO facades if the machine module is not present.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Lathanael"],
+  "credits": "The Forge and FML guys and the Ender IO team",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

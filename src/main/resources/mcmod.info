@@ -2,7 +2,7 @@
 {
   "modid": "facadepainter",
   "name": "Facade Painter",
-  "description": "Adds a tool to paint Ender IO facades if the machine module is not present.",
+  "description": "Adds a recipe to paint Ender IO facades if the machine module is not present.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

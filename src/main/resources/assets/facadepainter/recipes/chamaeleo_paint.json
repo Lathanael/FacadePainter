@@ -1,6 +1,6 @@
 {
     "_comment": [
-        "Craft Cobblestone from three Buckets of Static Gas"
+        "Craft Chamaeleo Paint in a shapeless recipe from oredict dye magenta, cyan, yellow and black"
     ],
     "type": "minecraft:crafting_shapeless",
     "group": "facadepainter",

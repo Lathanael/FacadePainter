@@ -1,0 +1,28 @@
+{
+    "_comment": [
+        "Craft Cobblestone from three Buckets of Static Gas"
+    ],
+    "type": "minecraft:crafting_shapeless",
+    "group": "facadepainter",
+    "ingredients": [
+        {
+            "type": "forge:ore_dict",
+            "ore": "dyeCyan"
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "dyeMagenta"
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "dyeBlack"
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "dyeYellow"
+        }
+    ],
+    "result": {
+        "item": "facadepainter:chamaeleo_paint"
+    }
+}

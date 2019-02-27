@@ -1,6 +1,12 @@
 {
     "_comment": [
-        "Craft Chamaeleo Paint in a shapeless recipe from oredict dye magenta, cyan, yellow and black"
+        "Craft Chamaeleo Paint in a shapeless recipe from oredict dye magenta, cyan, yellow and black and only register the recipe if the item exists"
+    ],
+    "conditions": [
+        {
+            "type" : "minecraft:item_exists",
+            "item" : "facadepainter:chamaeleo_paint"
+        }
     ],
     "type": "minecraft:crafting_shapeless",
     "group": "facadepainter",

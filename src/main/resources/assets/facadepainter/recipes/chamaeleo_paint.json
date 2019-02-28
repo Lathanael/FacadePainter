@@ -1,14 +1,11 @@
 {
     "_comment": [
-        "Craft Chamaeleo Paint in a shapeless recipe from oredict dye magenta, cyan, yellow and black and only register the recipe if the chamaeleo paint item exists and the ender io conduits module is loaded."
+        "Craft Chamaeleo Paint in a shapeless recipe from oredict dye magenta, cyan, yellow and black and only register the recipe if the item exists"
     ],
     "conditions": [
         {
-            "type": "minecraft:item_exists",
-            "item": "facadepainter:chamaeleo_paint"
-        }, {
-            "type": "mod_loaded",
-            "mod": "enderioconduits"
+            "type" : "minecraft:item_exists",
+            "item" : "facadepainter:chamaeleo_paint"
         }
     ],
     "type": "minecraft:crafting_shapeless",
@@ -17,13 +14,16 @@
         {
             "type": "forge:ore_dict",
             "ore": "dyeCyan"
-        }, {
+        },
+        {
             "type": "forge:ore_dict",
             "ore": "dyeMagenta"
-        }, {
+        },
+        {
             "type": "forge:ore_dict",
             "ore": "dyeBlack"
-        }, {
+        },
+        {
             "type": "forge:ore_dict",
             "ore": "dyeYellow"
         }

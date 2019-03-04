@@ -14,17 +14,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
-        // TODO Auto-generated method stub
         
     }
 
-    public void init(FMLInitializationEvent e) {
-        // TODO Auto-generated method stub
+    public void init(FMLInitializationEvent event) {
         
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-
+        
     }
 
     @SubscribeEvent

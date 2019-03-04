@@ -1,0 +1,20 @@
+{
+    "type": "facadepainter:painted_facade",
+    "group": "facadepainter",
+    "conditions": [
+        {
+            "type" : "minecraft:item_exists",
+            "item" : "enderio:item_conduit_facade"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "enderio:item_conduit_facade",
+            "data": 0
+        }
+    ],
+    "result": {
+        "item": "enderio:item_conduit_facade",
+        "data": 0
+    }
+}

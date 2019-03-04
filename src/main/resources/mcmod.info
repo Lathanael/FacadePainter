@@ -11,6 +11,8 @@
   "credits": "The Forge and FML guys and the Ender IO team",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "requiredMods": [ "enderio" ],
+  "dependencies": ["enderio" ],
+  "useDependencyInformation": true
 }
 ]

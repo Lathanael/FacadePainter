@@ -1,6 +1,5 @@
 package de.lathanael.facadepainter.recipes;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
@@ -9,7 +8,7 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
-
+import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
 
@@ -23,20 +22,29 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 
-public class PaintedFacadeRecipe extends ShapelessRecipes {
-
+public class PaintedFacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+    private final ResourceLocation group;
+    private final ItemStack output;
+    public final NonNullList<Ingredient> input;
+    
     public PaintedFacadeRecipe(@Nullable final ResourceLocation group, final NonNullList<Ingredient> input, final ItemStack output) {
-        super(group.toString(), output, input);
+        if (group != null) {
+            this.group = group;
+        } else {
+            this.group = new ResourceLocation(FacadePainter.MODID);
+        }        
+        this.input = input;
+        this.output = output;
     }
 
     @Override
@@ -136,21 +144,31 @@ public class PaintedFacadeRecipe extends ShapelessRecipes {
                 paintSource = itemstack;
             }
         }
-        PaintUtil.setPaintSource(facade, paintSource);
         Block paintBlock = PaintUtil.getBlockFromItem(paintSource);
         if (paintBlock == null) {
-            return super.getCraftingResult(inventory);
+            return ItemStack.EMPTY;
         }
         IBlockState paintState = PaintUtil.Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
         if (paintState == null) {
-            return super.getCraftingResult(inventory);
+            return ItemStack.EMPTY;
         }
-        PaintUtil.setSourceBlock(facade, paintState);
         facade.setCount(1);
+        PaintUtil.setPaintSource(facade, paintSource);
+        PaintUtil.setSourceBlock(facade, paintState);
 
         return facade;
     }
 
+    @Override
+    public ItemStack getRecipeOutput() {
+        return output;
+    }
+
+    @Override
+    public String getGroup() {
+        return group.toString();
+    }
+    
     @Override
     public boolean canFit(final int width, final int height) {
         if (Configs.recipes.useChamaeleoPaint) {
@@ -167,11 +185,9 @@ public class PaintedFacadeRecipe extends ShapelessRecipes {
             final ItemStack result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
 
             final NonNullList<Ingredient> ingredients = NonNullList.create();
-            for (JsonElement element : JsonUtils.getJsonArray(json, "ingredients")) {
-                ingredients.add(CraftingHelper.getIngredient(element, context));
-            }
+            ingredients.add(CraftingHelper.getIngredient(JsonUtils.getJsonObject(json, "facade"), context));
             if (ingredients.isEmpty()) {
-                throw new JsonParseException("No ingredients for shapeless recipe");
+                throw new JsonParseException("No ingredients for facade painting recipe");
             }
 
             return new PaintedFacadeRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result);

@@ -8,12 +8,10 @@
             "data": 3
         }
     ],
-    "ingredients": [
-        {
-            "item": "enderio:item_conduit_facade",
-            "data": 3
-        }
-    ],
+    "facade": {
+        "item": "enderio:item_conduit_facade",
+        "data": 3
+    },
     "result": {
         "item": "enderio:item_conduit_facade",
         "data": 3

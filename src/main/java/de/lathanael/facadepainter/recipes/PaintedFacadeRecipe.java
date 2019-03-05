@@ -8,6 +8,7 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
+
 import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
@@ -70,7 +71,7 @@ public class PaintedFacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> imple
                 }
                 // Since it is neither the facade nor the Chamaeleo Paint it must be the intended paint source,
                 // we check later if it is valid! This gets overwritten if more than one different stack is
-                // present in the crafting grid but the size check will catch that.
+                // present in the crafting grid but the ingredient count check will catch that.
                 paintSource = itemstack;
             }
         }
@@ -167,6 +168,11 @@ public class PaintedFacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> imple
     @Override
     public String getGroup() {
         return group.toString();
+    }
+    
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return input;
     }
     
     @Override

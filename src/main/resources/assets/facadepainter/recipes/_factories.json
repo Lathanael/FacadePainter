@@ -1,0 +1,5 @@
+{
+    "recipes": {
+        "painted_facade": "de.lathanael.facadepainter.recipes.PaintedFacadeRecipe$Factory"
+    }
+}

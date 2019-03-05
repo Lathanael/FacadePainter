@@ -29,6 +29,7 @@
         }
     ],
     "result": {
-        "item": "facadepainter:chamaeleo_paint"
+        "item": "facadepainter:chamaeleo_paint",
+        "count": 4
     }
 }

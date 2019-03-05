@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 
 version = version_major + '.' + version_minor + '.' + version_patch
-group = "de.lathanael.facadepainter" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "de.lathanael.facadepainter"
 archivesBaseName = "FacadePainter-" + minecraft_version
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -23,13 +23,8 @@ compileJava {
 minecraft {
     version = minecraft_version + "-" + forge_version
     runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20171003"
+
+    mappings = "stable_39"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     replaceIn "ExampleMod.java"
     replace "@VERSION@", project.version
@@ -56,16 +51,16 @@ repositories {
     maven { // HWYLA
         name 'TehNuts WAILA fork'
         url 'http://tehnut.info/maven'
-	}
+    }
 }
 
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-    //deobfCompile "mezz.jei:jei_1.12.2:4.13.+"
-    //deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.289"
+    //runtime "some.group:artifact:version"
+    //deobfCompile "some.group:artifact:version:classifier"
+    //provided "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.289"
 
     
     //jei
@@ -77,25 +72,10 @@ dependencies {
     runtime "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
     
     //EnderCore
-    //runtime "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}:deobf"
     runtime "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}"
     
     //Ender IO
-    //compile "com.enderio:EnderIO:${minecraft_version}-${eio_version}:api"
     compile "com.enderio:EnderIO:${minecraft_version}-${eio_version}"
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
 }
 
 processResources {

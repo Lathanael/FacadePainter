@@ -44,10 +44,6 @@ repositories {
         name 'tterrag maven2'
         url 'https://maven2.tterrag.com'
     }
-    maven { // CraftTweaker (aka MineTweaker3)
-        name 'jared maven'
-        url 'http://maven.blamejared.com/'
-    }
     maven { // HWYLA
         name 'TehNuts WAILA fork'
         url 'http://tehnut.info/maven'
@@ -60,7 +56,7 @@ dependencies {
     //compile "some.group:artifact:version:classifier"
     //runtime "some.group:artifact:version"
     //deobfCompile "some.group:artifact:version:classifier"
-    //provided "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.289"
+    //provided "some.group:artifact:version:classifier"
 
     
     //jei

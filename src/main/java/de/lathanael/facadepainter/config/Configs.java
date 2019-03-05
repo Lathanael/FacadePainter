@@ -4,7 +4,6 @@ import de.lathanael.facadepainter.FacadePainter;
 
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
-import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,19 +12,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = FacadePainter.MODID)
 public class Configs {
 
-    public static FeatureConfigs features = new FeatureConfigs();
-    public static class FeatureConfigs {
-        @Comment("Enable the Chamaeleo Paint item.")
-        @RequiresMcRestart
-        public boolean enableChamaeleoPaint = false;
-    }
-
     public static RecipeConfigs recipes = new RecipeConfigs();
     public static class RecipeConfigs {
-        @Comment({
-            "Enable the usage of Chamaeleo Paint in the facade recipe.", 
-            "ONLY enable this if the Chamaeleo Paint item is also enabled!"
-        })
+        @Comment("Enable the usage of Chamaeleo Paint in the facade recipe.")
         public boolean useChamaeleoPaint = false;
     }
 

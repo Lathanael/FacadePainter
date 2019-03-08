@@ -13,6 +13,4 @@ public class ModIntegration {
             recipeList = new FacadePaintingRecipeList();
         }
     }
-
-    // TODO: Reload when chamaeleo paint option is changed
 }

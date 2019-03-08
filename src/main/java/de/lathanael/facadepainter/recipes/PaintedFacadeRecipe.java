@@ -45,7 +45,7 @@ public class PaintedFacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> imple
             this.group = new ResourceLocation(FacadePainter.MODID);
         }        
         this.input = input;
-        this.output = output;
+        this.output = output.copy();
     }
 
     @Override

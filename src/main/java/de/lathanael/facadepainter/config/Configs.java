@@ -12,9 +12,17 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = FacadePainter.MODID)
 public class Configs {
 
+    public static FeatureConfigs features = new FeatureConfigs();
+    public static class FeatureConfigs {
+        @Comment("Enable the Chamaeleo Paint item.")
+        public boolean enableChamaeleoPaint = false;
+    }
+
     public static RecipeConfigs recipes = new RecipeConfigs();
     public static class RecipeConfigs {
-        @Comment("Enable the usage of Chamaeleo Paint in the facade recipe.")
+        @Comment({"Enable the usage of Chamaeleo Paint in the facade recipe.",
+                    "If the Chamaeleo Paint item is disabled the facade painting recipe will become uncraftable without user added recipes."
+        })
         public boolean useChamaeleoPaint = false;
     }
 

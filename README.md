@@ -9,3 +9,4 @@ This mod would not have been possible without the wonderful people making open s
 
 * mezz (for JEI and providing links to some implementations
 * The Ender IO team (without them there would be no reason for this mod to exist)
+* BluSunrize and the rest of the ImmersiveEngineering team (their JEI implementation was a treat!)

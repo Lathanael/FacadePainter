@@ -10,7 +10,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = FacadePainter.MODID, name = FacadePainter.NAME, version = FacadePainter.VERSION, dependencies = "required-after:forge@[14.23.4.2806,)", useMetadata = true)
+@Mod(modid = FacadePainter.MODID,
+        name = FacadePainter.NAME,
+        version = FacadePainter.VERSION,
+        dependencies = "required-after:forge@[14.23.4.2806,)",
+        useMetadata = true)
 public class FacadePainter {
 
     public static final String MODID = "facadepainter";

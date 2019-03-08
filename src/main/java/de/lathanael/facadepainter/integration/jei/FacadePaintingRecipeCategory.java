@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.base.init.ModObject;
 
 import de.lathanael.facadepainter.FacadePainter;
+import de.lathanael.facadepainter.config.Configs;
 
 import java.util.List;
 
@@ -87,15 +88,16 @@ public class FacadePaintingRecipeCategory implements IRecipeCategory<FacadePaint
 
         ItemStack input = inputs.get(0).get(0);
         ItemStack facade = inputs.get(1).get(0);
-        ItemStack chamaeleo_paint = ItemStack.EMPTY;
-        try {
-            chamaeleo_paint = inputs.get(2).get(0);
-        } catch (IndexOutOfBoundsException e) {}
+        ItemStack chamaeleo_paint = inputs.get(2).get(0);
         ItemStack output = outputs.get(0).get(0);
 
         recipeLayout.getItemStacks().set(INPUT_SLOT, input);
         recipeLayout.getItemStacks().set(FACADE_SLOT, facade);
-        recipeLayout.getItemStacks().set(CHAMAELEO_SLOT, chamaeleo_paint);
+        if (Configs.recipes.useChamaeleoPaint) {
+            recipeLayout.getItemStacks().set(CHAMAELEO_SLOT, chamaeleo_paint);
+        } else {
+            recipeLayout.getItemStacks().set(CHAMAELEO_SLOT, ItemStack.EMPTY);
+        }
         recipeLayout.getItemStacks().set(OUTPUT_SLOT, output);
     }
 }

@@ -7,6 +7,8 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 
+import de.lathanael.facadepainter.init.ItemRegistry;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -25,6 +27,7 @@ public class FacadePaintingRecipeList {
 
     private static final @Nonnull List<FacadePaintingRecipe> VALID_RECIPES = new ArrayList<>();
     private static final @Nonnull ItemStack FACADE = new ItemStack(ModObject.itemConduitFacade.getItem(), 1);
+    private static final @Nonnull ItemStack CHAMAELEO_PAINT = new ItemStack(ItemRegistry.itemChamaeleoPaint, 1);
 
     public FacadePaintingRecipeList() {
         generate();
@@ -43,7 +46,7 @@ public class FacadePaintingRecipeList {
                 if (rec instanceof AbstractPainterTemplate<?>) {
                     AbstractPainterTemplate<?> recipe = (AbstractPainterTemplate<?>) rec;
                     if (recipe.isPartialRecipe(tempStack, FACADE)) {
-                        VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, FACADE), Arrays.asList(tempStack, FACADE)));
+                        VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, FACADE), Arrays.asList(tempStack, FACADE, CHAMAELEO_PAINT)));
                     }
                 }
             }
@@ -52,10 +55,5 @@ public class FacadePaintingRecipeList {
 
     public List<FacadePaintingRecipe> getRecipeList() {
         return VALID_RECIPES;
-    }
-
-    public void rebuildRecipeList() {
-        VALID_RECIPES.clear();
-        generate();
     }
 }

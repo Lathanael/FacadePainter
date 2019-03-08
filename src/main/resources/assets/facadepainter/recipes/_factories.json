@@ -1,5 +1,6 @@
 {
     "recipes": {
-        "painted_facade": "de.lathanael.facadepainter.recipes.PaintedFacadeRecipe$Factory"
+        "painted_facade": "de.lathanael.facadepainter.recipes.PaintedFacadeRecipe$Factory",
+        "toggle_shapeless": "de.lathanael.facadepainter.recipes.ToggleableShapelessRecipe$Factory"
     }
 }

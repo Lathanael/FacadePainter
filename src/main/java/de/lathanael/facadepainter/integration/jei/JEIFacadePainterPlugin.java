@@ -24,6 +24,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
 
     @Override
     public void register(@Nonnull IModRegistry registry) {
+        // Facade painting recipe
         registry.addRecipes(ModIntegration.recipeList.getRecipeList(), FacadePaintingRecipeCategory.UID);
         registry.handleRecipes(FacadePaintingRecipe.class, recipe -> new FacadePaintingRecipeWrapper(recipe), FacadePaintingRecipeCategory.UID);
     }

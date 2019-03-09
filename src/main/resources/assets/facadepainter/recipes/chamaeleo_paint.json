@@ -8,7 +8,7 @@
             "item" : "facadepainter:chamaeleo_paint"
         }
     ],
-    "type": "minecraft:crafting_shapeless",
+    "type": "facadepainter:toggle_shapeless",
     "group": "facadepainter",
     "ingredients": [
         {

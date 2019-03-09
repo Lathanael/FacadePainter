@@ -86,6 +86,7 @@ public class FacadePaintingRecipeCategory implements IRecipeCategory<FacadePaint
         List<List<ItemStack>> inputs = ingredients.getInputs(VanillaTypes.ITEM);
         List<List<ItemStack>> outputs = ingredients.getOutputs(VanillaTypes.ITEM);
 
+        // TODO: Find the actual reason why the input is empty only when the recipes are looked up for the first time
         ItemStack input = inputs.get(0).get(0);
         ItemStack facade = inputs.get(1).get(0);
         ItemStack chamaeleo_paint = inputs.get(2).get(0);

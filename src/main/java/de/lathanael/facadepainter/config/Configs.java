@@ -16,12 +16,17 @@ public class Configs {
     public static class FeatureConfigs {
         @Comment("Enable the Chamaeleo Paint item.")
         public boolean enableChamaeleoPaint = false;
+
+        @Comment("Set to true to hide the 'Facade Painting' catergory in JEI.")
+        public boolean hideJEIFacadePaintingRecipeCategory = false;
     }
 
     public static RecipeConfigs recipes = new RecipeConfigs();
     public static class RecipeConfigs {
         @Comment({"Enable the usage of Chamaeleo Paint in the facade recipe.",
-                    "If the Chamaeleo Paint item is disabled the facade painting recipe will become uncraftable without user added recipes."
+                    "",
+                    "If enabled and the Chamaeleo Paint item is disabled the facade painting recipe will",
+                    "become uncraftable without user added recipes for the Chamaeleo Paint item!"
         })
         public boolean useChamaeleoPaint = false;
     }

@@ -1,7 +1,7 @@
 package de.lathanael.facadepainter.config;
 
 import de.lathanael.facadepainter.FacadePainter;
-
+import de.lathanael.facadepainter.integration.ModIntegration;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.ConfigManager;
@@ -37,6 +37,7 @@ public class Configs {
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
             if (event.getModID().equals(FacadePainter.MODID)) {
                 ConfigManager.sync(FacadePainter.MODID, Config.Type.INSTANCE);
+                ModIntegration.updateJEIRecipeList();
             }
         }
     }

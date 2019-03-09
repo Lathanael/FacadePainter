@@ -18,6 +18,8 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -37,8 +39,14 @@ public class FacadePaintingRecipeList {
         Iterator<Item> listIterator = ForgeRegistries.ITEMS.getValuesCollection().iterator();
         while (listIterator.hasNext()) {
             ItemStack tempStack = new ItemStack(listIterator.next());
+            if (tempStack.isEmpty()) {
+                continue;
+            }
             Block tempBlock = PaintUtil.getBlockFromItem(tempStack);
             if (tempBlock != null && tempBlock instanceof IPaintable) {
+                continue;
+            }
+            if (tempBlock == Blocks.AIR || tempStack.getItem() == Items.AIR) {
                 continue;
             }
             Map<String, IMachineRecipe> painterRecipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);

@@ -6,7 +6,7 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
-
+import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.init.ItemRegistry;
 
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -37,8 +39,14 @@ public class FacadePaintingRecipeList {
         Iterator<Item> listIterator = ForgeRegistries.ITEMS.getValuesCollection().iterator();
         while (listIterator.hasNext()) {
             ItemStack tempStack = new ItemStack(listIterator.next());
+            if (tempStack.isEmpty()) {
+                continue;
+            }
             Block tempBlock = PaintUtil.getBlockFromItem(tempStack);
             if (tempBlock != null && tempBlock instanceof IPaintable) {
+                continue;
+            }
+            if (tempBlock == Blocks.AIR || tempStack.getItem() == Items.AIR) {
                 continue;
             }
             Map<String, IMachineRecipe> painterRecipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
@@ -46,7 +54,11 @@ public class FacadePaintingRecipeList {
                 if (rec instanceof AbstractPainterTemplate<?>) {
                     AbstractPainterTemplate<?> recipe = (AbstractPainterTemplate<?>) rec;
                     if (recipe.isPartialRecipe(tempStack, FACADE)) {
-                        VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, FACADE), Arrays.asList(tempStack, FACADE, CHAMAELEO_PAINT)));
+                        try {
+                            VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, FACADE), Arrays.asList(tempStack, FACADE, CHAMAELEO_PAINT)));
+                        } catch (Exception e) {
+                            FacadePainter.logger.debug("Empty ingredients list supplied for: " + tempStack.toString());
+                        }
                     }
                 }
             }

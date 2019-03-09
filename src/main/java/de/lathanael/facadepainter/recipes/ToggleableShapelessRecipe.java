@@ -1,6 +1,5 @@
 package de.lathanael.facadepainter.recipes;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -8,11 +7,6 @@ import com.google.gson.JsonParseException;
 import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.config.Configs;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.client.util.RecipeItemHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -25,25 +19,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
-import net.minecraftforge.common.util.RecipeMatcher;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-public class ToggleableShapelessRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
-    private final ResourceLocation group;
-    private final ItemStack output;
-    private final NonNullList<Ingredient> inputs;
-    private boolean isSimple = true;
-
-    public ToggleableShapelessRecipe(@Nullable final ResourceLocation group, final NonNullList<Ingredient> inputs, final ItemStack output) {
-        if (group != null) {
-            this.group = group;
-        } else {
-            this.group = new ResourceLocation(FacadePainter.MODID);
-        }        
-        this.inputs = inputs;
-        this.output = output.copy();
-        for (Ingredient i : inputs)
-            this.isSimple &= i.isSimple();
+public class ToggleableShapelessRecipe extends ShapelessOreRecipe {
+    
+    public ToggleableShapelessRecipe(ResourceLocation group, NonNullList<Ingredient> input, ItemStack result) {
+        super(group, input, result);
     }
 
     @Override
@@ -51,55 +32,7 @@ public class ToggleableShapelessRecipe extends IForgeRegistryEntry.Impl<IRecipe>
         if (!Configs.features.enableChamaeleoPaint) {
             return false;
         }
-        int ingredientCount = 0;
-        RecipeItemHelper recipeItemHelper = new RecipeItemHelper();
-        List<ItemStack> items = Lists.newArrayList();
-
-        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            ItemStack itemstack = inventory.getStackInSlot(i);
-            if (!itemstack.isEmpty()) {
-                ++ingredientCount;
-                if (this.isSimple) {
-                    recipeItemHelper.accountStack(itemstack, 1);
-                } else {
-                    items.add(itemstack);
-                }
-            }
-        }
-
-        if (ingredientCount != this.inputs.size()) {
-            return false;
-        }
-        if (this.isSimple) {
-            return recipeItemHelper.canCraft(this, null);
-        }
-
-        return RecipeMatcher.findMatches(items, this.inputs) != null;
-    }
-
-    @Override
-    public ItemStack getCraftingResult(final InventoryCrafting inventory) {
-        return output.copy();
-    }
-
-    @Override
-    public boolean canFit(final int width, final int height) {
-        return width * height >= this.inputs.size();
-    }
-
-    @Override
-    public ItemStack getRecipeOutput() {
-        return output;
-    }
-
-    @Override
-    public String getGroup() {
-        return group.toString();
-    }
-    
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return inputs;
+        return super.matches(inventory, worldIn);
     }
 
     public static class Factory implements IRecipeFactory {
@@ -117,7 +50,7 @@ public class ToggleableShapelessRecipe extends IForgeRegistryEntry.Impl<IRecipe>
                 throw new JsonParseException("No ingredients for toggleable shapeless recipe");
             }
 
-            return new ToggleableShapelessRecipe(group.isEmpty() ? null : new ResourceLocation(group), ingredients, result);
+            return new ToggleableShapelessRecipe(group.isEmpty() ? new ResourceLocation(FacadePainter.MODID) : new ResourceLocation(group), ingredients, result);
         }
     }
 }

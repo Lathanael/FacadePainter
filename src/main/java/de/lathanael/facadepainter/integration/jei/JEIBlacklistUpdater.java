@@ -2,10 +2,12 @@ package de.lathanael.facadepainter.integration.jei;
 
 import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
+
 import mezz.jei.api.IRecipeRegistry;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class JEIBlacklistUpdater {
@@ -44,14 +46,14 @@ public class JEIBlacklistUpdater {
         if (!hide) {
             JEIFacadePainterPlugin.INSTANCE.getJEIHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
             IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
-            for (IRecipe recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
-                registry.hideRecipe(registry.getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+            for (IRecipeWrapper recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+                registry.hideRecipe(recipe, VanillaRecipeCategoryUid.CRAFTING);
             }
         } else {
             JEIFacadePainterPlugin.INSTANCE.getJEIHelpers().getIngredientBlacklist().removeIngredientFromBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
             IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
-            for (IRecipe recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
-                registry.unhideRecipe(registry.getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+            for (IRecipeWrapper recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+                registry.unhideRecipe(recipe, VanillaRecipeCategoryUid.CRAFTING);
             }
         }
     }

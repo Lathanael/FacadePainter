@@ -12,12 +12,14 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
 import net.minecraft.item.ItemStack;
@@ -34,7 +36,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
 
     private IJeiRuntime jeiRuntime;
     private IJeiHelpers jeiHelpers;
-    private List<IRecipe> toggleableShapelessRecipes = new ArrayList<>();
+    private List<IRecipeWrapper> toggleableShapelessRecipes = new ArrayList<>();
 
     @Override
     public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
@@ -51,6 +53,11 @@ public class JEIFacadePainterPlugin implements IModPlugin {
             // Hide Chamaeleo Paint item if it is not enabled
             jeiHelpers.getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
         }
+        // Recipes to clear a painted facade
+        if (Configs.recipes.enableShapelessClearingRecipe) {
+            registry.addRecipes(ModIntegration.recipeList.getPseudoClearingRecipeList(), VanillaRecipeCategoryUid.CRAFTING);
+            registry.handleRecipes(FacadeClearingRecipe.class, recipe -> new FacadeClearingRecipeWrapper(recipe), VanillaRecipeCategoryUid.CRAFTING);
+        }
         // Facade painting recipe
         registry.addRecipes(ModIntegration.recipeList.getRecipeList(), FacadePaintingRecipeCategory.UID);
         registry.handleRecipes(FacadePaintingRecipe.class, recipe -> new FacadePaintingRecipeWrapper(recipe), FacadePaintingRecipeCategory.UID);
@@ -59,12 +66,21 @@ public class JEIFacadePainterPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
         jeiRuntime = runtime;
-        // Fetch the wrapper object for the chamaeleo paint recipe and also hide it if the recipe is disabled
+        // Fetch the wrapper object for ToggleableShapelessRecipe recipes and also hide them if their recipe is disabled
         for (Entry<ResourceLocation, IRecipe> recipeEntry : ForgeRegistries.RECIPES.getEntries()) {
-            if (recipeEntry.getKey().getNamespace().equalsIgnoreCase(FacadePainter.MODID) && recipeEntry.getValue() instanceof ToggleableShapelessRecipe) {
-                toggleableShapelessRecipes.add(recipeEntry.getValue());
-                if (!Configs.features.enableChamaeleoPaint) {
-                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipeEntry.getValue(), VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+            IRecipe recipe =  recipeEntry.getValue();
+            if (recipe instanceof ToggleableShapelessRecipe) {
+                toggleableShapelessRecipes.add(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING));
+                if (!Configs.features.enableChamaeleoPaint && !(recipe.getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
+                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+                } else {
+                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+                }
+            }
+            if (recipe instanceof FacadeClearingRecipe) {
+                toggleableShapelessRecipes.add(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING));
+                if (!Configs.recipes.enableShapelessClearingRecipe) {
+                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
                 }
             }
         }
@@ -81,7 +97,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
         return jeiHelpers;
     }
 
-    public List<IRecipe> getToggleableShapelessRecipes() {
+    public List<IRecipeWrapper> getToggleableShapelessRecipes() {
         return toggleableShapelessRecipes;
     }
 }

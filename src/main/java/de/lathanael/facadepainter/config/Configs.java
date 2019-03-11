@@ -14,21 +14,25 @@ public class Configs {
 
     public static FeatureConfigs features = new FeatureConfigs();
     public static class FeatureConfigs {
-        @Comment("Enable the Chamaeleo Paint item.")
+        @Comment("Enable the Chamaeleo Paint item. [default=false]")
         public boolean enableChamaeleoPaint = false;
 
-        @Comment("Set to true to hide the 'Facade Painting' catergory in JEI.")
+        @Comment("Set to true to hide the 'Facade Painting' catergory in JEI. [default=false]")
         public boolean hideJEIFacadePaintingRecipeCategory = false;
     }
 
     public static RecipeConfigs recipes = new RecipeConfigs();
     public static class RecipeConfigs {
-        @Comment({"Enable the usage of Chamaeleo Paint in the facade recipe.",
+        @Comment({"Enable the usage of Chamaeleo Paint in the facade recipe. [default=false]",
                     "",
                     "If enabled and the Chamaeleo Paint item is disabled the facade painting recipe will",
                     "become uncraftable without user added recipes for the Chamaeleo Paint item!"
         })
         public boolean useChamaeleoPaint = false;
+
+        @Comment({"If set to false the shapeless recipe to clear a painted facade by putting it into",
+                    "any valid crafting grid is removed. [default=true]"})
+        public boolean enableShapelessClearingRecipe = true;
     }
 
     @Mod.EventBusSubscriber

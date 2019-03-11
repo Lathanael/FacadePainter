@@ -1,6 +1,7 @@
 package de.lathanael.facadepainter.integration.jei;
 
-import de.lathanael.facadepainter.FacadePainter;
+import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
+
 import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
 import de.lathanael.facadepainter.integration.ModIntegration;
@@ -34,7 +35,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
 
     private IJeiRuntime jeiRuntime;
     private IJeiHelpers jeiHelpers;
-    private List<IRecipe> toggleableShapelessRecipes = new ArrayList<>();
+    private List<Object> toggleableShapelessRecipes = new ArrayList<>();
 
     @Override
     public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
@@ -47,27 +48,43 @@ public class JEIFacadePainterPlugin implements IModPlugin {
     public void register(@Nonnull IModRegistry registry) {
         INSTANCE = this;
         jeiHelpers = registry.getJeiHelpers();
+        // Hide Chamaeleo Paint item if it is not enabled
         if (!Configs.features.enableChamaeleoPaint) {
-            // Hide Chamaeleo Paint item if it is not enabled
             jeiHelpers.getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
         }
+        // Recipes to clear a painted facade
+        registry.addRecipes(ModIntegration.recipeList.getPseudoClearingRecipeList(), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(FacadeClearingRecipe.class, recipe -> new FacadeClearingRecipeWrapper(recipe), VanillaRecipeCategoryUid.CRAFTING);
         // Facade painting recipe
         registry.addRecipes(ModIntegration.recipeList.getRecipeList(), FacadePaintingRecipeCategory.UID);
         registry.handleRecipes(FacadePaintingRecipe.class, recipe -> new FacadePaintingRecipeWrapper(recipe), FacadePaintingRecipeCategory.UID);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public void onRuntimeAvailable(IJeiRuntime runtime) {
         jeiRuntime = runtime;
-        // Fetch the wrapper object for the chamaeleo paint recipe and also hide it if the recipe is disabled
+        // Fetch the wrapper/recipe object for ToggleableShapelessRecipe and FacadeClearing recipes and also hide them if their recipe is disabled
         for (Entry<ResourceLocation, IRecipe> recipeEntry : ForgeRegistries.RECIPES.getEntries()) {
-            if (recipeEntry.getKey().getNamespace().equalsIgnoreCase(FacadePainter.MODID) && recipeEntry.getValue() instanceof ToggleableShapelessRecipe) {
-                toggleableShapelessRecipes.add(recipeEntry.getValue());
-                if (!Configs.features.enableChamaeleoPaint) {
-                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipeEntry.getValue(), VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+            IRecipe recipe =  recipeEntry.getValue();
+            if (recipe instanceof ToggleableShapelessRecipe) {
+                toggleableShapelessRecipes.add(recipe);
+                if (!Configs.features.enableChamaeleoPaint && !(recipe.getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
+                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
+                } else {
+                    jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
                 }
             }
         }
+        for (Object recipeWrapper : jeiRuntime.getRecipeRegistry().getRecipeWrappers(jeiRuntime.getRecipeRegistry().getRecipeCategory(VanillaRecipeCategoryUid.CRAFTING))) {
+            if (recipeWrapper instanceof FacadeClearingRecipeWrapper) {
+                toggleableShapelessRecipes.add(recipeWrapper);
+                if (!Configs.recipes.enableShapelessClearingRecipe) {
+                    jeiRuntime.getRecipeRegistry().hideRecipe((FacadeClearingRecipeWrapper) recipeWrapper, VanillaRecipeCategoryUid.CRAFTING);
+                }
+            }
+        }
+        // Hide the facade painting recipe category if the config value is set to true
         if (Configs.features.hideJEIFacadePaintingRecipeCategory) {
             jeiRuntime.getRecipeRegistry().hideRecipeCategory(FacadePaintingRecipeCategory.UID);
         }
@@ -81,7 +98,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
         return jeiHelpers;
     }
 
-    public List<IRecipe> getToggleableShapelessRecipes() {
+    public List<Object> getToggleableShapelessRecipes() {
         return toggleableShapelessRecipes;
     }
 }

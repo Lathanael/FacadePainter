@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
+
 import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.config.Configs;
 
@@ -29,10 +31,35 @@ public class ToggleableShapelessRecipe extends ShapelessOreRecipe {
 
     @Override
     public boolean matches(final InventoryCrafting inventory, final World worldIn) {
-        if (!Configs.features.enableChamaeleoPaint) {
+        int ingredientCount = 0;
+        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+            if (!itemstack.isEmpty()) {
+                ++ingredientCount;
+                if (!Configs.recipes.enableShapelessClearingRecipe && itemstack.getItem() instanceof ItemConduitFacade) {
+                    return false;
+                }
+            }
+        }
+        if (!Configs.features.enableChamaeleoPaint && ingredientCount > 3) {
             return false;
         }
+
         return super.matches(inventory, worldIn);
+    }
+
+    @Override
+    public ItemStack getCraftingResult(final InventoryCrafting inventory) {
+        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+            if (!itemstack.isEmpty()) {
+                if (itemstack.getItem() instanceof ItemConduitFacade) {
+                    return new ItemStack(itemstack.getItem(), 1, itemstack.getItemDamage());
+                }
+            }
+        }
+
+        return super.getCraftingResult(inventory);
     }
 
     public static class Factory implements IRecipeFactory {

@@ -1,23 +1,28 @@
 package de.lathanael.facadepainter.integration.jei;
 
+import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
+
 import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
+import de.lathanael.facadepainter.recipes.ToggleableShapelessRecipe;
 
 import mezz.jei.api.IRecipeRegistry;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.oredict.OreDictionary;
 
 public class JEIBlacklistUpdater {
 
+    private boolean isFacadeClearingRecipeEnabled;
     private boolean isFacadePaintingCategoryHidden;
     private boolean isChamaeleoPaintEnabled;
     
     public JEIBlacklistUpdater() {
         isChamaeleoPaintEnabled = Configs.features.enableChamaeleoPaint;
         isFacadePaintingCategoryHidden = Configs.features.hideJEIFacadePaintingRecipeCategory;
+        isFacadeClearingRecipeEnabled = Configs.recipes.enableShapelessClearingRecipe;
     }
 
     public void handleBlacklisting() {
@@ -32,6 +37,12 @@ public class JEIBlacklistUpdater {
             handleFacadePaintingCategory(status);
             isFacadePaintingCategoryHidden = status;
         }
+
+        status = Configs.recipes.enableShapelessClearingRecipe;
+        if (status != isFacadeClearingRecipeEnabled) {
+            handleFacadeClearingRecipe(status);
+            isFacadePaintingCategoryHidden = status;
+        }
     }
 
     private void handleFacadePaintingCategory(final boolean hide) {
@@ -43,17 +54,37 @@ public class JEIBlacklistUpdater {
     }
 
     private void handleChamaeleoPaintRecipe(final boolean hide) {
+        IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
         if (!hide) {
             JEIFacadePainterPlugin.INSTANCE.getJEIHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
-            IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
-            for (IRecipeWrapper recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
-                registry.hideRecipe(recipe, VanillaRecipeCategoryUid.CRAFTING);
+            for (Object recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+                if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
+                    registry.hideRecipe(registry.getRecipeWrapper((ToggleableShapelessRecipe) recipe, VanillaRecipeCategoryUid.CRAFTING) , VanillaRecipeCategoryUid.CRAFTING);
+                }
             }
         } else {
             JEIFacadePainterPlugin.INSTANCE.getJEIHelpers().getIngredientBlacklist().removeIngredientFromBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
-            IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
-            for (IRecipeWrapper recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
-                registry.unhideRecipe(recipe, VanillaRecipeCategoryUid.CRAFTING);
+            for (Object recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+                if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
+                    registry.unhideRecipe(registry.getRecipeWrapper((ToggleableShapelessRecipe) recipe, VanillaRecipeCategoryUid.CRAFTING) , VanillaRecipeCategoryUid.CRAFTING);
+                }
+            }
+        }
+    }
+
+    private void handleFacadeClearingRecipe(final boolean hide) {
+        IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
+        if (!hide) {
+            for (Object recipeWrapper : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+                if (recipeWrapper instanceof FacadeClearingRecipeWrapper) {
+                    registry.hideRecipe((FacadeClearingRecipeWrapper) recipeWrapper, VanillaRecipeCategoryUid.CRAFTING);
+                }
+            }
+        } else {
+            for (Object recipeWrapper : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+                if (recipeWrapper instanceof FacadeClearingRecipeWrapper) {
+                    registry.unhideRecipe((FacadeClearingRecipeWrapper) recipeWrapper, VanillaRecipeCategoryUid.CRAFTING);
+                }
             }
         }
     }

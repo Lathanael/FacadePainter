@@ -1,12 +1,16 @@
 package de.lathanael.facadepainter.integration.jei;
 
+import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
+
+import de.lathanael.facadepainter.integration.ModIntegration;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import de.lathanael.facadepainter.integration.ModIntegration;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.wrapper.ICustomCraftingRecipeWrapper;
@@ -49,5 +53,16 @@ public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper
         recipeLayout.getItemStacks().set(0, inputs);
         recipeLayout.getItemStacks().set(1, outputs.get(0).get(0));
         recipeLayout.setShapeless();
+        recipeLayout.getItemStacks().addTooltipCallback(new PaintedFacadeTooltip());
     }
+
+     private class PaintedFacadeTooltip implements ITooltipCallback<ItemStack> {
+
+        @Override
+        public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+            if (slotIndex == 0 && ingredient.getItem() instanceof ItemConduitFacade) {
+                tooltip.add("Accepts any painted facade!");
+            }
+        }
+     }
 }

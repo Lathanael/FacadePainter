@@ -3,6 +3,14 @@
 [Facade Painter]() is a mod for Minecraft. It enables the player to create painted facade blocks from the mod [Ender IO](https://minecraft.curseforge.com/projects/ender-io) when
 the machines module and thus the painter is not installed.
 
+### License
+
+Copyright (c) 2019 Lathanael.
+This program and the accompanying materials are made available under the terms of the MIT 
+License which accompanies this distribution, and is available at http://opensource.org/licenses/MIT
+
+SPDX-License-Identifier: MIT
+
 ### Special thanks
 
 This mod would not have been possible without the wonderful people making open source mods for me to look stuff up. I'd like to thank especially the following modders as

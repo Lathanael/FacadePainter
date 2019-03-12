@@ -16,7 +16,7 @@ import com.google.gson.JsonParseException;
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 
 import de.lathanael.facadepainter.FacadePainter;
-import de.lathanael.facadepainter.config.Configs;
+import de.lathanael.facadepainter.network.SyncedConfig;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -45,12 +45,12 @@ public class ToggleableShapelessRecipe extends ShapelessOreRecipe {
             ItemStack itemstack = inventory.getStackInSlot(i);
             if (!itemstack.isEmpty()) {
                 ++ingredientCount;
-                if (!Configs.recipes.enableShapelessClearingRecipe && itemstack.getItem() instanceof ItemConduitFacade) {
+                if (!SyncedConfig.enableShapelessClearingRecipe && itemstack.getItem() instanceof ItemConduitFacade) {
                     return false;
                 }
             }
         }
-        if (!Configs.features.enableChamaeleoPaint && ingredientCount > 3) {
+        if (!SyncedConfig.enableChamaeleoPaint && ingredientCount > 3) {
             return false;
         }
 

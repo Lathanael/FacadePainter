@@ -19,8 +19,8 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 
 import de.lathanael.facadepainter.FacadePainter;
-import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
+import de.lathanael.facadepainter.network.SyncedConfig;
 
 import java.util.Map;
 
@@ -88,15 +88,15 @@ public class PaintedFacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> imple
             return false;
         } else if (ingredientCount > 3) {
             return false;
-        } else if (ingredientCount < 3 && Configs.recipes.useChamaeleoPaint) {
+        } else if (ingredientCount < 3 && SyncedConfig.useChamaeleoPaint) {
             return false;
-        } else if (ingredientCount > 2 && !Configs.recipes.useChamaeleoPaint) {
+        } else if (ingredientCount > 2 && !SyncedConfig.useChamaeleoPaint) {
             return false;
         }
         if (facade == null || paintSource == null) {
             return false;
         }
-        if (Configs.recipes.useChamaeleoPaint && chamaeleo == null) {
+        if (SyncedConfig.useChamaeleoPaint && chamaeleo == null) {
             return false;
         }
 
@@ -186,7 +186,7 @@ public class PaintedFacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> imple
     
     @Override
     public boolean canFit(final int width, final int height) {
-        if (Configs.recipes.useChamaeleoPaint) {
+        if (SyncedConfig.useChamaeleoPaint) {
             return width * height > 2;
         }
         return width * height > 1;

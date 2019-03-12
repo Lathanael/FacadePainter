@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
-import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -39,10 +38,10 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 @JEIPlugin
 public class JEIFacadePainterPlugin implements IModPlugin {
 
-    public static JEIFacadePainterPlugin INSTANCE;
+    public static JEIFacadePainterPlugin instance;
 
     private IJeiRuntime jeiRuntime;
-    private IJeiHelpers jeiHelpers;
+    private IModRegistry jeiModRegistry;
     private List<Object> toggleableShapelessRecipes = new ArrayList<>();
 
     @Override
@@ -54,11 +53,11 @@ public class JEIFacadePainterPlugin implements IModPlugin {
 
     @Override
     public void register(@Nonnull IModRegistry registry) {
-        INSTANCE = this;
-        jeiHelpers = registry.getJeiHelpers();
+        instance = this;
+        jeiModRegistry = registry;
         // Hide Chamaeleo Paint item if it is not enabled
         if (!SyncedConfig.enableChamaeleoPaint) {
-            jeiHelpers.getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
+            jeiModRegistry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
         }
         // Recipes to clear a painted facade
         registry.addRecipes(ModIntegration.recipeList.getPseudoClearingRecipeList(), VanillaRecipeCategoryUid.CRAFTING);
@@ -103,8 +102,8 @@ public class JEIFacadePainterPlugin implements IModPlugin {
         return jeiRuntime;
     }
 
-    public IJeiHelpers getJEIHelpers() {
-        return jeiHelpers;
+    public IModRegistry getJEIModRegistry() {
+        return jeiModRegistry;
     }
 
     public List<Object> getToggleableShapelessRecipes() {

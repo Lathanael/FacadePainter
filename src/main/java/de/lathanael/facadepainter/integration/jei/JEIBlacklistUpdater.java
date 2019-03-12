@@ -54,24 +54,24 @@ public class JEIBlacklistUpdater {
 
     private void handleFacadePaintingCategory(final boolean hide) {
         if (hide) {
-            JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry().hideRecipeCategory(FacadePaintingRecipeCategory.UID);
+            JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry().hideRecipeCategory(FacadePaintingRecipeCategory.UID);
         } else {
-            JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry().unhideRecipeCategory(FacadePaintingRecipeCategory.UID);
+            JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry().unhideRecipeCategory(FacadePaintingRecipeCategory.UID);
         }
     }
 
     private void handleChamaeleoPaintRecipe(final boolean hide) {
-        IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
+        IRecipeRegistry registry = JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry();
         if (!hide) {
-            JEIFacadePainterPlugin.INSTANCE.getJEIHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
-            for (Object recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+            JEIFacadePainterPlugin.instance.getJEIModRegistry().getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
+            for (Object recipe : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
                     registry.hideRecipe(registry.getRecipeWrapper((ToggleableShapelessRecipe) recipe, VanillaRecipeCategoryUid.CRAFTING) , VanillaRecipeCategoryUid.CRAFTING);
                 }
             }
         } else {
-            JEIFacadePainterPlugin.INSTANCE.getJEIHelpers().getIngredientBlacklist().removeIngredientFromBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
-            for (Object recipe : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+            JEIFacadePainterPlugin.instance.getJEIModRegistry().getJeiHelpers().getIngredientBlacklist().removeIngredientFromBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
+            for (Object recipe : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
                     registry.unhideRecipe(registry.getRecipeWrapper((ToggleableShapelessRecipe) recipe, VanillaRecipeCategoryUid.CRAFTING) , VanillaRecipeCategoryUid.CRAFTING);
                 }
@@ -80,15 +80,15 @@ public class JEIBlacklistUpdater {
     }
 
     private void handleFacadeClearingRecipe(final boolean hide) {
-        IRecipeRegistry registry = JEIFacadePainterPlugin.INSTANCE.getJEIRuntime().getRecipeRegistry();
+        IRecipeRegistry registry = JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry();
         if (!hide) {
-            for (Object recipeWrapper : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+            for (Object recipeWrapper : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipeWrapper instanceof FacadeClearingRecipeWrapper) {
                     registry.hideRecipe((FacadeClearingRecipeWrapper) recipeWrapper, VanillaRecipeCategoryUid.CRAFTING);
                 }
             }
         } else {
-            for (Object recipeWrapper : JEIFacadePainterPlugin.INSTANCE.getToggleableShapelessRecipes()) {
+            for (Object recipeWrapper : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipeWrapper instanceof FacadeClearingRecipeWrapper) {
                     registry.unhideRecipe((FacadeClearingRecipeWrapper) recipeWrapper, VanillaRecipeCategoryUid.CRAFTING);
                 }

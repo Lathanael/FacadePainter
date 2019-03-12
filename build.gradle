@@ -67,7 +67,7 @@ dependencies {
     runtime "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
 
     // EnderCore
-    deobfCompile "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}:deobf"
+    deobfProvided "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}:deobf"
     runtime "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}"
 
     // Ender IO

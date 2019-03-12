@@ -35,7 +35,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
 
 @JEIPlugin
 public class JEIFacadePainterPlugin implements IModPlugin {
@@ -59,7 +58,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
         jeiHelpers = registry.getJeiHelpers();
         // Hide Chamaeleo Paint item if it is not enabled
         if (!SyncedConfig.enableChamaeleoPaint) {
-            jeiHelpers.getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint, 1, OreDictionary.WILDCARD_VALUE));
+            jeiHelpers.getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
         }
         // Recipes to clear a painted facade
         registry.addRecipes(ModIntegration.recipeList.getPseudoClearingRecipeList(), VanillaRecipeCategoryUid.CRAFTING);

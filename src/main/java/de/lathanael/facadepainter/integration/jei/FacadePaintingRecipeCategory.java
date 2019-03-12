@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lathanael.
+ * This program and the accompanying materials
+ * are made available under the terms of the MIT 
+ * License which accompanies this distribution, 
+ * and is available at http://opensource.org/licenses/MIT
+ *
+ * SPDX-License-Identifier: MIT
+ *******************************************************************************/
 package de.lathanael.facadepainter.integration.jei;
 
 import com.google.common.collect.Lists;
@@ -5,7 +14,7 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.base.init.ModObject;
 
 import de.lathanael.facadepainter.FacadePainter;
-import de.lathanael.facadepainter.config.Configs;
+import de.lathanael.facadepainter.network.SyncedConfig;
 
 import java.util.List;
 
@@ -96,7 +105,7 @@ public class FacadePaintingRecipeCategory implements IRecipeCategory<FacadePaint
 
         recipeLayout.getItemStacks().set(INPUT_SLOT, input);
         recipeLayout.getItemStacks().set(FACADE_SLOT, facade);
-        if (Configs.recipes.useChamaeleoPaint) {
+        if (SyncedConfig.useChamaeleoPaint) {
             recipeLayout.getItemStacks().set(CHAMAELEO_SLOT, chamaeleo_paint);
         } else {
             recipeLayout.getItemStacks().set(CHAMAELEO_SLOT, ItemStack.EMPTY);

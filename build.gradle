@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = version_major + '.' + version_minor + '.' + version_patch
+version = version_major + '.' + version_minor + '.' + version_patch + version_dev
 group = "de.lathanael.facadepainter"
 archivesBaseName = "FacadePainter-" + minecraft_version
 
@@ -67,6 +67,7 @@ dependencies {
     runtime "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
 
     // EnderCore
+    deobfProvided "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}:deobf"
     runtime "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}"
 
     // Ender IO

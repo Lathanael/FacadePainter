@@ -1,13 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lathanael.
+ * This program and the accompanying materials
+ * are made available under the terms of the MIT 
+ * License which accompanies this distribution, 
+ * and is available at http://opensource.org/licenses/MIT
+ *
+ * SPDX-License-Identifier: MIT
+ *******************************************************************************/
 package de.lathanael.facadepainter.config;
 
 import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.integration.ModIntegration;
+import de.lathanael.facadepainter.network.PacketConfigSync;
+import de.lathanael.facadepainter.network.NetworkHandler;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 @Config(modid = FacadePainter.MODID)
 public class Configs {
@@ -38,11 +53,26 @@ public class Configs {
     @Mod.EventBusSubscriber
     private static class EventHandler {
         @SubscribeEvent
-        public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
             if (event.getModID().equals(FacadePainter.MODID)) {
                 ConfigManager.sync(FacadePainter.MODID, Config.Type.INSTANCE);
                 ModIntegration.updateJEIRecipeList();
             }
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLoggedIn(final PlayerLoggedInEvent event) {
+            if (event.player.world.isRemote) {
+                return;
+            }
+
+            FacadePainter.logger.info("Sending server configs to client: " + event.player.getName());
+            PacketConfigSync message = new PacketConfigSync();
+            message.enableChamaeleoPaint = Configs.features.enableChamaeleoPaint;
+            message.hideJEIFacadePaintingRecipeCategory = Configs.features.hideJEIFacadePaintingRecipeCategory;
+            message.useChamaeleoPaint = Configs.recipes.useChamaeleoPaint;
+            message.enableShapelessClearingRecipe = Configs.recipes.enableShapelessClearingRecipe;
+            NetworkHandler.sendToClient(message, (EntityPlayerMP) event.player);
         }
     }
 }

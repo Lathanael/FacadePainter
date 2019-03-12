@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lathanael.
+ * This program and the accompanying materials
+ * are made available under the terms of the MIT 
+ * License which accompanies this distribution, 
+ * and is available at http://opensource.org/licenses/MIT
+ *
+ * SPDX-License-Identifier: MIT
+ *******************************************************************************/
 package de.lathanael.facadepainter.recipes;
 
 import com.google.gson.JsonElement;
@@ -7,7 +16,7 @@ import com.google.gson.JsonParseException;
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 
 import de.lathanael.facadepainter.FacadePainter;
-import de.lathanael.facadepainter.config.Configs;
+import de.lathanael.facadepainter.network.SyncedConfig;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -36,12 +45,12 @@ public class ToggleableShapelessRecipe extends ShapelessOreRecipe {
             ItemStack itemstack = inventory.getStackInSlot(i);
             if (!itemstack.isEmpty()) {
                 ++ingredientCount;
-                if (!Configs.recipes.enableShapelessClearingRecipe && itemstack.getItem() instanceof ItemConduitFacade) {
+                if (!SyncedConfig.enableShapelessClearingRecipe && itemstack.getItem() instanceof ItemConduitFacade) {
                     return false;
                 }
             }
         }
-        if (!Configs.features.enableChamaeleoPaint && ingredientCount > 3) {
+        if (!SyncedConfig.enableChamaeleoPaint && ingredientCount > 3) {
             return false;
         }
 

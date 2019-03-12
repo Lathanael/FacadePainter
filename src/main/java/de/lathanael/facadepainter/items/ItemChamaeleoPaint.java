@@ -26,7 +26,6 @@ public class ItemChamaeleoPaint extends Item {
         setRegistryName(new ResourceLocation(FacadePainter.MODID, "chamaeleo_paint"));
         setTranslationKey(FacadePainter.MODID + ".chamaeleo_paint");
         setCreativeTab(CreativeTabs.MISC);
-        
     }
 
     @SideOnly(Side.CLIENT)

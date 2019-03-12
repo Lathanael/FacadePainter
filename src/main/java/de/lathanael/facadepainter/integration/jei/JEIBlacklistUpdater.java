@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.lathanael.facadepainter.integration.jei;
 
+import java.util.Arrays;
+
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 
 import de.lathanael.facadepainter.init.ItemRegistry;
@@ -16,6 +18,7 @@ import de.lathanael.facadepainter.network.SyncedConfig;
 import de.lathanael.facadepainter.recipes.ToggleableShapelessRecipe;
 
 import mezz.jei.api.IRecipeRegistry;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
 import net.minecraft.item.ItemStack;
@@ -63,14 +66,14 @@ public class JEIBlacklistUpdater {
     private void handleChamaeleoPaintRecipe(final boolean hide) {
         IRecipeRegistry registry = JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry();
         if (!hide) {
-            JEIFacadePainterPlugin.instance.getJEIModRegistry().getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
+            JEIFacadePainterPlugin.instance.getJEIModRegistry().getIngredientRegistry().removeIngredientsAtRuntime(VanillaTypes.ITEM, Arrays.asList(new ItemStack(ItemRegistry.itemChamaeleoPaint)));
             for (Object recipe : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
                     registry.hideRecipe(registry.getRecipeWrapper((ToggleableShapelessRecipe) recipe, VanillaRecipeCategoryUid.CRAFTING) , VanillaRecipeCategoryUid.CRAFTING);
                 }
             }
         } else {
-            JEIFacadePainterPlugin.instance.getJEIModRegistry().getJeiHelpers().getIngredientBlacklist().removeIngredientFromBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));
+            JEIFacadePainterPlugin.instance.getJEIModRegistry().getIngredientRegistry().addIngredientsAtRuntime(VanillaTypes.ITEM, Arrays.asList(new ItemStack(ItemRegistry.itemChamaeleoPaint)));
             for (Object recipe : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
                     registry.unhideRecipe(registry.getRecipeWrapper((ToggleableShapelessRecipe) recipe, VanillaRecipeCategoryUid.CRAFTING) , VanillaRecipeCategoryUid.CRAFTING);

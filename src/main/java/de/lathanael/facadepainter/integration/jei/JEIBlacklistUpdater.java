@@ -11,8 +11,8 @@ package de.lathanael.facadepainter.integration.jei;
 
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 
-import de.lathanael.facadepainter.config.Configs;
 import de.lathanael.facadepainter.init.ItemRegistry;
+import de.lathanael.facadepainter.network.SyncedConfig;
 import de.lathanael.facadepainter.recipes.ToggleableShapelessRecipe;
 
 import mezz.jei.api.IRecipeRegistry;
@@ -29,25 +29,25 @@ public class JEIBlacklistUpdater {
     private boolean isChamaeleoPaintEnabled;
     
     public JEIBlacklistUpdater() {
-        isChamaeleoPaintEnabled = Configs.features.enableChamaeleoPaint;
-        isFacadePaintingCategoryHidden = Configs.features.hideJEIFacadePaintingRecipeCategory;
-        isFacadeClearingRecipeEnabled = Configs.recipes.enableShapelessClearingRecipe;
+        isChamaeleoPaintEnabled = SyncedConfig.enableChamaeleoPaint;
+        isFacadePaintingCategoryHidden = SyncedConfig.hideJEIFacadePaintingRecipeCategory;
+        isFacadeClearingRecipeEnabled = SyncedConfig.enableShapelessClearingRecipe;
     }
 
     public void handleBlacklisting() {
-        boolean status = Configs.features.enableChamaeleoPaint;
+        boolean status = SyncedConfig.enableChamaeleoPaint;
         if (status != isChamaeleoPaintEnabled) {
             handleChamaeleoPaintRecipe(status);
             isChamaeleoPaintEnabled = status;
         }
 
-        status = Configs.features.hideJEIFacadePaintingRecipeCategory;
+        status = SyncedConfig.hideJEIFacadePaintingRecipeCategory;
         if (status != isFacadePaintingCategoryHidden) {
             handleFacadePaintingCategory(status);
             isFacadePaintingCategoryHidden = status;
         }
 
-        status = Configs.recipes.enableShapelessClearingRecipe;
+        status = SyncedConfig.enableShapelessClearingRecipe;
         if (status != isFacadeClearingRecipeEnabled) {
             handleFacadeClearingRecipe(status);
             isFacadePaintingCategoryHidden = status;

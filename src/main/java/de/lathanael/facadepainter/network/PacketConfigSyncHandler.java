@@ -10,6 +10,7 @@
 package de.lathanael.facadepainter.network;
 
 import de.lathanael.facadepainter.FacadePainter;
+import de.lathanael.facadepainter.integration.ModIntegration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.IThreadListener;
 
@@ -31,6 +32,9 @@ public class PacketConfigSyncHandler implements IMessageHandler<PacketConfigSync
                 SyncedConfig.hideJEIFacadePaintingRecipeCategory = message.hideJEIFacadePaintingRecipeCategory;
                 SyncedConfig.useChamaeleoPaint = message.useChamaeleoPaint;
                 SyncedConfig.enableShapelessClearingRecipe = message.enableShapelessClearingRecipe;
+                if (ModIntegration.isJEILoaded) {
+                    ModIntegration.jeiBlacklistUpdater.handleBlacklisting();
+                }
                 FacadePainter.logger.info("Connected to server - server configs synched");
             }
         });

@@ -80,7 +80,8 @@ public class JEIFacadePainterPlugin implements IModPlugin {
                 toggleableShapelessRecipes.add(recipe);
                 if (!SyncedConfig.enableChamaeleoPaint && !(recipe.getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
                     jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
-                } else {
+                }
+                if (recipe.getRecipeOutput().getItem() instanceof ItemConduitFacade) {
                     jeiRuntime.getRecipeRegistry().hideRecipe(jeiRuntime.getRecipeRegistry().getRecipeWrapper(recipe, VanillaRecipeCategoryUid.CRAFTING), VanillaRecipeCategoryUid.CRAFTING);
                 }
             }

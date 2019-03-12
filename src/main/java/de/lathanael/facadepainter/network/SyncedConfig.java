@@ -18,4 +18,10 @@ public class SyncedConfig {
     public static boolean useChamaeleoPaint = Configs.recipes.useChamaeleoPaint;
     public static boolean enableShapelessClearingRecipe = Configs.recipes.enableShapelessClearingRecipe;
 
+    public static void updateValuesSP() {
+        enableChamaeleoPaint = Configs.features.enableChamaeleoPaint;
+        hideJEIFacadePaintingRecipeCategory = Configs.features.hideJEIFacadePaintingRecipeCategory;
+        useChamaeleoPaint = Configs.recipes.useChamaeleoPaint;
+        enableShapelessClearingRecipe = Configs.recipes.enableShapelessClearingRecipe;
+    }
 }

@@ -66,7 +66,7 @@ dependencies {
     runtime "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
     runtime "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
 
-    // EnderCore
+    // EnderCore - If you use eclipse remove/disable the deobf dependency after workspace setup from your referenced libraries or the dev client will not start
     deobfProvided "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}:deobf"
     runtime "com.enderio.core:EnderCore:${minecraft_version}-${ec_version}"
 

@@ -12,6 +12,7 @@ package de.lathanael.facadepainter.config;
 import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.integration.ModIntegration;
 import de.lathanael.facadepainter.network.PacketConfigSync;
+import de.lathanael.facadepainter.network.SyncedConfig;
 import de.lathanael.facadepainter.network.NetworkHandler;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -56,6 +57,7 @@ public class Configs {
         public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
             if (event.getModID().equals(FacadePainter.MODID)) {
                 ConfigManager.sync(FacadePainter.MODID, Config.Type.INSTANCE);
+                SyncedConfig.updateValuesSP();
                 ModIntegration.updateJEIRecipeList();
             }
         }

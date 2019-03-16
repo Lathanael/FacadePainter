@@ -55,6 +55,7 @@ public class JEIFacadePainterPlugin implements IModPlugin {
     public void register(@Nonnull IModRegistry registry) {
         instance = this;
         jeiModRegistry = registry;
+        ModIntegration.preInitJEI(registry);
         // Hide Chamaeleo Paint item if it is not enabled
         if (!SyncedConfig.enableChamaeleoPaint) {
             jeiModRegistry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ItemRegistry.itemChamaeleoPaint));

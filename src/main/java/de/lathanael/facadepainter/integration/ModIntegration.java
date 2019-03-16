@@ -11,7 +11,7 @@ package de.lathanael.facadepainter.integration;
 
 import de.lathanael.facadepainter.integration.jei.FacadePainterRecipeLists;
 import de.lathanael.facadepainter.integration.jei.JEIBlacklistUpdater;
-
+import mezz.jei.api.IModRegistry;
 import net.minecraftforge.fml.common.Loader;
 
 public class ModIntegration {
@@ -20,10 +20,10 @@ public class ModIntegration {
     public static JEIBlacklistUpdater jeiBlacklistUpdater;
     public static boolean isJEILoaded = false;
 
-    public static void preInit() {
+    public static void preInitJEI(IModRegistry registry) {
         isJEILoaded = Loader.isModLoaded("jei");
         if(isJEILoaded) {
-            recipeList = new FacadePainterRecipeLists();
+            recipeList = new FacadePainterRecipeLists(registry);
             jeiBlacklistUpdater = new JEIBlacklistUpdater();
         }
     }

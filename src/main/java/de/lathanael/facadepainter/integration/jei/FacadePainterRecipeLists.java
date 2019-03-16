@@ -18,6 +18,8 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.init.ItemRegistry;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ingredients.VanillaTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,13 +29,13 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.FluidUtil;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FacadePainterRecipeLists {
 
@@ -45,23 +47,27 @@ public class FacadePainterRecipeLists {
     private final @Nonnull ItemStack TRANSPARENT_HARDENED_FACADE = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 3);
     private final @Nonnull ItemStack CHAMAELEO_PAINT = new ItemStack(ItemRegistry.itemChamaeleoPaint, 1);
 
-    public FacadePainterRecipeLists() {
-        generate();
+    public FacadePainterRecipeLists(IModRegistry registry) {
+        generate(registry);
     }
 
-    private void generate() {
-        Iterator<Item> listIterator = ForgeRegistries.ITEMS.getValuesCollection().iterator();
+    private void generate(IModRegistry registry) {
+        Iterator<ItemStack> listIterator = registry.getIngredientRegistry().getAllIngredients(VanillaTypes.ITEM).iterator();
         List<ItemStack> facadeResults = new ArrayList<>();
         List<ItemStack> transparentFacadeResults = new ArrayList<>();
         List<ItemStack> hardenedFacadeResults = new ArrayList<>();
         List<ItemStack> transparentHardenedFacadeResults = new ArrayList<>();
 
         while (listIterator.hasNext()) {
-            ItemStack tempStack = new ItemStack(listIterator.next());
+            ItemStack tempStack = listIterator.next();
             if (tempStack.isEmpty()) {
                 continue;
             }
             if (tempStack.getItem() instanceof ItemConduitFacade) {
+                continue;
+            }
+            FluidStack tempFluid = FluidUtil.getFluidTypeFromItem(tempStack);
+            if (tempFluid != null && tempFluid.getFluid() != null) {
                 continue;
             }
             Block tempBlock = PaintUtil.getBlockFromItem(tempStack);

@@ -20,11 +20,17 @@ public class ModIntegration {
     public static JEIBlacklistUpdater jeiBlacklistUpdater;
     public static boolean isJEILoaded = false;
 
-    public static void preInitJEI(IModRegistry registry) {
+    
+    public static void preInit() {
         isJEILoaded = Loader.isModLoaded("jei");
         if(isJEILoaded) {
-            recipeList = new FacadePainterRecipeLists(registry);
             jeiBlacklistUpdater = new JEIBlacklistUpdater();
+        }
+    }
+
+    public static void preInitJEI(IModRegistry registry) {
+        if(isJEILoaded) {
+            recipeList = new FacadePainterRecipeLists(registry);
         }
     }
 

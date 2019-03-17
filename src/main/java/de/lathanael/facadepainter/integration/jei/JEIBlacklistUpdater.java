@@ -28,7 +28,7 @@ public class JEIBlacklistUpdater {
     private boolean isFacadeClearingRecipeEnabled;
     private boolean isFacadePaintingCategoryHidden;
     private boolean isChamaeleoPaintEnabled;
-    
+
     public JEIBlacklistUpdater() {
         isChamaeleoPaintEnabled = SyncedConfig.enableChamaeleoPaint;
         isFacadePaintingCategoryHidden = SyncedConfig.hideJEIFacadePaintingRecipeCategory;
@@ -36,22 +36,24 @@ public class JEIBlacklistUpdater {
     }
 
     public void handleBlacklisting() {
-        boolean status = SyncedConfig.enableChamaeleoPaint;
-        if (status != isChamaeleoPaintEnabled) {
-            handleChamaeleoPaintRecipe(status);
-            isChamaeleoPaintEnabled = status;
-        }
+        if (JEIFacadePainterPlugin.instance != null && JEIFacadePainterPlugin.instance.getJEIRuntime() != null) {
+            boolean status = SyncedConfig.enableChamaeleoPaint;
+            if (status != isChamaeleoPaintEnabled) {
+                handleChamaeleoPaintRecipe(status);
+                isChamaeleoPaintEnabled = status;
+            }
 
-        status = SyncedConfig.hideJEIFacadePaintingRecipeCategory;
-        if (status != isFacadePaintingCategoryHidden) {
-            handleFacadePaintingCategory(status);
-            isFacadePaintingCategoryHidden = status;
-        }
+            status = SyncedConfig.hideJEIFacadePaintingRecipeCategory;
+            if (status != isFacadePaintingCategoryHidden) {
+                handleFacadePaintingCategory(status);
+                isFacadePaintingCategoryHidden = status;
+            }
 
-        status = SyncedConfig.enableShapelessClearingRecipe;
-        if (status != isFacadeClearingRecipeEnabled) {
-            handleFacadeClearingRecipe(status);
-            isFacadePaintingCategoryHidden = status;
+            status = SyncedConfig.enableShapelessClearingRecipe;
+            if (status != isFacadeClearingRecipeEnabled) {
+                handleFacadeClearingRecipe(status);
+                isFacadePaintingCategoryHidden = status;
+            }
         }
     }
 

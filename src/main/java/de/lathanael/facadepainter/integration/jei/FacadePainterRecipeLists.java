@@ -78,24 +78,45 @@ public class FacadePainterRecipeLists {
                 continue;
             }
             Map<String, IMachineRecipe> painterRecipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
+            boolean isRecipe = false;
             for (IMachineRecipe rec : painterRecipes.values()) {
                 if (rec instanceof AbstractPainterTemplate<?>) {
                     AbstractPainterTemplate<?> recipe = (AbstractPainterTemplate<?>) rec;
-                    if (recipe.isRecipe(tempStack, FACADE)) {
+                    try {
+                        isRecipe = recipe.isRecipe(tempStack, FACADE);
+                    } catch (Exception ex) {
+                        isRecipe = false;
+                    }
+                    if (isRecipe) {
                         try {
                             VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, FACADE), Arrays.asList(tempStack, FACADE, CHAMAELEO_PAINT)));
                             facadeResults.add(recipe.getCompletedResult(tempStack, FACADE));
-                        } catch (Exception e) {
+                        } catch (Exception ex) {
                             FacadePainter.logger.debug("Empty ingredients list supplied for: " + tempStack.toString());
                         }
                     }
-                    if (recipe.isRecipe(tempStack, HARDENED_FACADE)) {
+                    try {
+                        isRecipe = recipe.isRecipe(tempStack, HARDENED_FACADE);
+                    } catch (Exception ex) {
+                        isRecipe = false;
+                    }
+                    if (isRecipe) {
                         hardenedFacadeResults.add(recipe.getCompletedResult(tempStack, HARDENED_FACADE));
                     }
-                    if (recipe.isRecipe(tempStack, TRANSPARENT_FACADE)) {
+                    try {
+                        isRecipe = recipe.isRecipe(tempStack, TRANSPARENT_FACADE);
+                    } catch (Exception ex) {
+                        isRecipe = false;
+                    }
+                    if (isRecipe) {
                         transparentFacadeResults.add(recipe.getCompletedResult(tempStack, TRANSPARENT_FACADE));
                     }
-                    if (recipe.isRecipe(tempStack, TRANSPARENT_HARDENED_FACADE)) {
+                    try {
+                        isRecipe = recipe.isRecipe(tempStack, TRANSPARENT_HARDENED_FACADE);
+                    } catch (Exception ex) {
+                        isRecipe = false;
+                    }
+                    if (isRecipe) {
                         transparentHardenedFacadeResults.add(recipe.getCompletedResult(tempStack, TRANSPARENT_HARDENED_FACADE));
                     }
                 }

@@ -10,6 +10,7 @@
 package de.lathanael.facadepainter.proxy;
 
 import de.lathanael.facadepainter.init.ItemRegistry;
+import de.lathanael.facadepainter.integration.ModIntegration;
 import de.lathanael.facadepainter.network.NetworkHandler;
 
 import net.minecraft.item.Item;
@@ -28,7 +29,9 @@ public class CommonProxy {
         NetworkHandler.init();
     }
 
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+        ModIntegration.preInit();
+    }
 
     public void postInit(FMLPostInitializationEvent event) {}
 

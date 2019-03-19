@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketConfigSyncHandler implements IMessageHandler<PacketConfigSync, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketConfigSync message, MessageContext ctx) {
+    public IMessage onMessage(PacketConfigSync message, MessageContext context) {
         IThreadListener iThreadListener = Minecraft.getMinecraft();
         iThreadListener.addScheduledTask(new Runnable() {
 

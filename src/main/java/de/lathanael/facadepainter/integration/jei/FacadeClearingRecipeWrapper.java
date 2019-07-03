@@ -11,6 +11,7 @@ package de.lathanael.facadepainter.integration.jei;
 
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 
+import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.integration.ModIntegration;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.wrapper.ICustomCraftingRecipeWrapper;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper {
@@ -48,14 +50,9 @@ public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper
         recipeLayout.getItemStacks().init(1, false, 94, 18);
 
         List<ItemStack> inputs = new ArrayList<>();
-        if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 0) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(0);
-        } else if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 1) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(1);
-        } else if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 2) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(2);
-        } else if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 3) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(3);
+        int meta = ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage();
+        if (0 <= meta && meta <= 3) {
+            inputs = ModIntegration.recipeList.getClearingRecipeList().get(meta);
         }
         List<List<ItemStack>> outputs = ingredients.getOutputs(VanillaTypes.ITEM);
 
@@ -70,7 +67,7 @@ public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper
         @Override
         public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
             if (slotIndex == 0 && ingredient.getItem() instanceof ItemConduitFacade) {
-                tooltip.add("Accepts any painted facade!");
+                tooltip.add(I18n.format("gui."+ FacadePainter.MODID + ".jei.facade_clearing.tooltip"));
             }
         }
      }

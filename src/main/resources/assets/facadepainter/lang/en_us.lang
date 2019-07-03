@@ -1,4 +1,5 @@
 item.facadepainter.chamaeleo_paint.name=Chamaeleo Paint
 
 gui.facadepainter.jei.facade_painting=Facade Painting
+gui.facadepainter.jei.facade_clearing.tooltip=Accepts any painted facade!
 gui.facadepainter.jei.shapeless_recipe=Shapeless Recipe

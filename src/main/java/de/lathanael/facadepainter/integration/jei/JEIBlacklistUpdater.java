@@ -39,7 +39,7 @@ public class JEIBlacklistUpdater {
         if (JEIFacadePainterPlugin.instance != null && JEIFacadePainterPlugin.instance.getJEIRuntime() != null) {
             boolean status = SyncedConfig.enableChamaeleoPaint;
             if (status != isChamaeleoPaintEnabled) {
-                handleChamaeleoPaintRecipe(status);
+                handleChamaeleoPaintRecipe(!status);
                 isChamaeleoPaintEnabled = status;
             }
 
@@ -51,7 +51,7 @@ public class JEIBlacklistUpdater {
 
             status = SyncedConfig.enableShapelessClearingRecipe;
             if (status != isFacadeClearingRecipeEnabled) {
-                handleFacadeClearingRecipe(status);
+                handleFacadeClearingRecipe(!status);
                 isFacadePaintingCategoryHidden = status;
             }
         }
@@ -67,7 +67,7 @@ public class JEIBlacklistUpdater {
 
     private void handleChamaeleoPaintRecipe(final boolean hide) {
         IRecipeRegistry registry = JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry();
-        if (!hide) {
+        if (hide) {
             JEIFacadePainterPlugin.instance.getJEIModRegistry().getIngredientRegistry().removeIngredientsAtRuntime(VanillaTypes.ITEM, Arrays.asList(new ItemStack(ItemRegistry.itemChamaeleoPaint)));
             for (Object recipe : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipe instanceof ToggleableShapelessRecipe && !(((ToggleableShapelessRecipe) recipe).getRecipeOutput().getItem() instanceof ItemConduitFacade)) {
@@ -86,7 +86,7 @@ public class JEIBlacklistUpdater {
 
     private void handleFacadeClearingRecipe(final boolean hide) {
         IRecipeRegistry registry = JEIFacadePainterPlugin.instance.getJEIRuntime().getRecipeRegistry();
-        if (!hide) {
+        if (hide) {
             for (Object recipeWrapper : JEIFacadePainterPlugin.instance.getToggleableShapelessRecipes()) {
                 if (recipeWrapper instanceof FacadeClearingRecipeWrapper) {
                     registry.hideRecipe((FacadeClearingRecipeWrapper) recipeWrapper, VanillaRecipeCategoryUid.CRAFTING);

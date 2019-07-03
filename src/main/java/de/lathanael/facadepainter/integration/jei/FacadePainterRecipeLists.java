@@ -41,10 +41,11 @@ public class FacadePainterRecipeLists {
 
     private final @Nonnull List<FacadePaintingRecipe> VALID_RECIPES = new ArrayList<>();
     private final @Nonnull List<List<ItemStack>> FACADE_RESULTS = new ArrayList<>();
-    private final @Nonnull ItemStack FACADE = new ItemStack(ModObject.itemConduitFacade.getItem(), 1);
-    private final @Nonnull ItemStack TRANSPARENT_FACADE = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 2);
-    private final @Nonnull ItemStack HARDENED_FACADE = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 1);
-    private final @Nonnull ItemStack TRANSPARENT_HARDENED_FACADE = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 3);
+    private final ItemStack[] FACADES = {
+            new ItemStack(ModObject.itemConduitFacade.getItem(), 1),
+            new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 1),
+            new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 2),
+            new ItemStack(ModObject.itemConduitFacade.getItem(), 1, 3)};
     private final @Nonnull ItemStack CHAMAELEO_PAINT = new ItemStack(ItemRegistry.itemChamaeleoPaint, 1);
 
     public FacadePainterRecipeLists(IModRegistry registry) {
@@ -53,11 +54,6 @@ public class FacadePainterRecipeLists {
 
     private void generate(IModRegistry registry) {
         Iterator<ItemStack> listIterator = registry.getIngredientRegistry().getAllIngredients(VanillaTypes.ITEM).iterator();
-        List<ItemStack> facadeResults = new ArrayList<>();
-        List<ItemStack> transparentFacadeResults = new ArrayList<>();
-        List<ItemStack> hardenedFacadeResults = new ArrayList<>();
-        List<ItemStack> transparentHardenedFacadeResults = new ArrayList<>();
-
         while (listIterator.hasNext()) {
             ItemStack tempStack = listIterator.next();
             if (tempStack.isEmpty()) {
@@ -78,53 +74,31 @@ public class FacadePainterRecipeLists {
                 continue;
             }
             Map<String, IMachineRecipe> painterRecipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
-            boolean isRecipe = false;
-            for (IMachineRecipe rec : painterRecipes.values()) {
-                if (rec instanceof AbstractPainterTemplate<?>) {
-                    AbstractPainterTemplate<?> recipe = (AbstractPainterTemplate<?>) rec;
-                    try {
-                        isRecipe = recipe.isRecipe(tempStack, FACADE);
-                    } catch (Exception ex) {
-                        isRecipe = false;
-                    }
-                    if (isRecipe) {
+            boolean isRecipe;
+            List <ItemStack> results;
+            for (ItemStack facade : FACADES) {
+                results = new ArrayList<>();
+                for (IMachineRecipe rec : painterRecipes.values()) {
+                    if (rec instanceof AbstractPainterTemplate<?>) {
+                        AbstractPainterTemplate<?> recipe = (AbstractPainterTemplate<?>) rec;
                         try {
-                            VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, FACADE), Arrays.asList(tempStack, FACADE, CHAMAELEO_PAINT)));
-                            facadeResults.add(recipe.getCompletedResult(tempStack, FACADE));
+                            isRecipe = recipe.isRecipe(tempStack, facade);
                         } catch (Exception ex) {
-                            FacadePainter.logger.debug("Empty ingredients list supplied for: " + tempStack.toString());
+                            isRecipe = false;
                         }
-                    }
-                    try {
-                        isRecipe = recipe.isRecipe(tempStack, HARDENED_FACADE);
-                    } catch (Exception ex) {
-                        isRecipe = false;
-                    }
-                    if (isRecipe) {
-                        hardenedFacadeResults.add(recipe.getCompletedResult(tempStack, HARDENED_FACADE));
-                    }
-                    try {
-                        isRecipe = recipe.isRecipe(tempStack, TRANSPARENT_FACADE);
-                    } catch (Exception ex) {
-                        isRecipe = false;
-                    }
-                    if (isRecipe) {
-                        transparentFacadeResults.add(recipe.getCompletedResult(tempStack, TRANSPARENT_FACADE));
-                    }
-                    try {
-                        isRecipe = recipe.isRecipe(tempStack, TRANSPARENT_HARDENED_FACADE);
-                    } catch (Exception ex) {
-                        isRecipe = false;
-                    }
-                    if (isRecipe) {
-                        transparentHardenedFacadeResults.add(recipe.getCompletedResult(tempStack, TRANSPARENT_HARDENED_FACADE));
+                        if (isRecipe) {
+                            try {
+                                VALID_RECIPES.add(new FacadePaintingRecipe(recipe.getCompletedResult(tempStack, facade), Arrays.asList(tempStack, facade, CHAMAELEO_PAINT)));
+                                results.add(recipe.getCompletedResult(tempStack, facade));
+                            } catch (Exception ex) {
+                                FacadePainter.logger.debug("Empty ingredients list supplied for: " + tempStack.toString());
+                            }
+                        }
+
                     }
                 }
+                FACADE_RESULTS.add(results);
             }
-            FACADE_RESULTS.add(facadeResults);
-            FACADE_RESULTS.add(hardenedFacadeResults);
-            FACADE_RESULTS.add(transparentFacadeResults);
-            FACADE_RESULTS.add(transparentHardenedFacadeResults);
         }
     }
 
@@ -138,10 +112,9 @@ public class FacadePainterRecipeLists {
 
     public List<FacadeClearingRecipe> getPseudoClearingRecipeList() {
         List<FacadeClearingRecipe> pseudoClearingList = new ArrayList<>();
-        pseudoClearingList.add(new FacadeClearingRecipe(FACADE, Arrays.asList(FACADE)));
-        pseudoClearingList.add(new FacadeClearingRecipe(HARDENED_FACADE, Arrays.asList(HARDENED_FACADE)));
-        pseudoClearingList.add(new FacadeClearingRecipe(TRANSPARENT_FACADE, Arrays.asList(TRANSPARENT_FACADE)));
-        pseudoClearingList.add(new FacadeClearingRecipe(TRANSPARENT_HARDENED_FACADE, Arrays.asList(TRANSPARENT_HARDENED_FACADE)));
+        for (int i = 0; i < 4; i++ ) {
+            pseudoClearingList.add(new FacadeClearingRecipe(FACADES[i], Arrays.asList(FACADES[i])));
+        }
         return pseudoClearingList;
     }
 }

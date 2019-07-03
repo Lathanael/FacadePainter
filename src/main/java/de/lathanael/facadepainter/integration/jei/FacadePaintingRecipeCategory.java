@@ -30,7 +30,6 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class FacadePaintingRecipeCategory implements IRecipeCategory<FacadePaintingRecipeWrapper> {
 
@@ -86,7 +85,6 @@ public class FacadePaintingRecipeCategory implements IRecipeCategory<FacadePaint
         return tooltip;
     }
 
-    // TODO: Make outputs cycle as well
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull FacadePaintingRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(INPUT_SLOT, true, 0, 0);
@@ -99,7 +97,6 @@ public class FacadePaintingRecipeCategory implements IRecipeCategory<FacadePaint
 
         ItemStack input = inputs.get(0).get(0);
         ItemStack facade = inputs.get(1).get(0);
-        facade.setItemDamage(OreDictionary.WILDCARD_VALUE);
         ItemStack chamaeleo_paint = inputs.get(2).get(0);
         ItemStack output = outputs.get(0).get(0);
 

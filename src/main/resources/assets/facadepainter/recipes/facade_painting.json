@@ -4,7 +4,8 @@
     "conditions": [
         {
             "type" : "minecraft:item_exists",
-            "item" : "enderio:item_conduit_facade"
+            "item" : "enderio:item_conduit_facade",
+            "data" : 0
         }
     ],
     "facade": {

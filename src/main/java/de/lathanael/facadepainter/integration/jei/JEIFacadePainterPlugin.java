@@ -62,10 +62,10 @@ public class JEIFacadePainterPlugin implements IModPlugin {
         }
         // Recipes to clear a painted facade
         registry.addRecipes(ModIntegration.recipeList.getPseudoClearingRecipeList(), VanillaRecipeCategoryUid.CRAFTING);
-        registry.handleRecipes(FacadeClearingRecipe.class, recipe -> new FacadeClearingRecipeWrapper(recipe), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(FacadeClearingRecipe.class, FacadeClearingRecipeWrapper::new, VanillaRecipeCategoryUid.CRAFTING);
         // Facade painting recipe
         registry.addRecipes(ModIntegration.recipeList.getRecipeList(), FacadePaintingRecipeCategory.UID);
-        registry.handleRecipes(FacadePaintingRecipe.class, recipe -> new FacadePaintingRecipeWrapper(recipe), FacadePaintingRecipeCategory.UID);
+        registry.handleRecipes(FacadePaintingRecipe.class, FacadePaintingRecipeWrapper::new, FacadePaintingRecipeCategory.UID);
     }
     
     @SuppressWarnings("unchecked")

@@ -50,14 +50,9 @@ public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper
         recipeLayout.getItemStacks().init(1, false, 94, 18);
 
         List<ItemStack> inputs = new ArrayList<>();
-        if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 0) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(0);
-        } else if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 1) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(1);
-        } else if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 2) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(2);
-        } else if (ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage() == 3) {
-            inputs = ModIntegration.recipeList.getClearingRecipeList().get(3);
+        int meta = ingredients.getInputs(VanillaTypes.ITEM).get(0).get(0).getItemDamage();
+        if (0 <= meta && meta <= 3) {
+            inputs = ModIntegration.recipeList.getClearingRecipeList().get(meta);
         }
         List<List<ItemStack>> outputs = ingredients.getOutputs(VanillaTypes.ITEM);
 

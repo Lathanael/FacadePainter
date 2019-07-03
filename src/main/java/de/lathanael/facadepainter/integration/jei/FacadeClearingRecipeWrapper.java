@@ -11,6 +11,7 @@ package de.lathanael.facadepainter.integration.jei;
 
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 
+import de.lathanael.facadepainter.FacadePainter;
 import de.lathanael.facadepainter.integration.ModIntegration;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.wrapper.ICustomCraftingRecipeWrapper;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper {
@@ -70,7 +72,7 @@ public class FacadeClearingRecipeWrapper implements ICustomCraftingRecipeWrapper
         @Override
         public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
             if (slotIndex == 0 && ingredient.getItem() instanceof ItemConduitFacade) {
-                tooltip.add("Accepts any painted facade!");
+                tooltip.add(I18n.format("gui."+ FacadePainter.MODID + ".jei.facade_clearing.tooltip"));
             }
         }
      }
